@@ -33,5 +33,6 @@
 
 ###  Links
 
-[ESP32 WebSocket Server: Control Outputs (Arduino IDE)](https://randomnerdtutorials.com/esp32-websocket-server-arduino/)
+[ESP32 WebSocket Server: Control Outputs (ESP32/ESP8266 + Arduino IDE)](https://randomnerdtutorials.com/esp32-websocket-server-arduino/)
+
 [Control a DC Motor with Arduino, ESP8266 or ESP32 without IC](https://diyi0t.com/control-dc-motor-without-ic-motor-driver/)
