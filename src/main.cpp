@@ -3,11 +3,12 @@
 #include <AsyncTCP.h>
 #include <ESPAsyncWebServer.h>
 #include "SPIFFS.h"
-#include "webpage.h"
 
 // Replace with your network credentials
-const char* ssid = "UA-Alumnos";
-const char* password = "41umn05WLC";
+//const char* ssid = "UA-Alumnos";
+//const char* password = "41umn05WLC";
+const char* ssid = "Fibertel WiFi212 2.4GHz";
+const char* password = "dorysmerlin0270";
 
 bool motorState = 0;
 const int motorPin = 23;
@@ -96,42 +97,34 @@ void setup(){
     Serial.println("An Error has occurred while mounting SPIFFS");
     return;
   } 
-  
-  File file = SPIFFS.open("/index.html");
-  if(!file){
-    Serial.println("Failed to open file for reading");
-    return;
-  }
-  
-  Serial.println("File Content:");
-  while(file.available() - (file.size()-20)){
-    Serial.write(file.read());
-  }
-  file.close();
+  Serial.println("SPIFFS mounted successfully");
     
-    // Connect to Wi-Fi
-    WiFi.begin(ssid, password);
-    while (WiFi.status() != WL_CONNECTED) {
-        delay(1000);
-        Serial.println("Connecting to WiFi..");
-    }
+  // Connect to Wi-Fi
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(ssid, password);
+  Serial.print("Connecting to WiFi ..");
+  while (WiFi.status() != WL_CONNECTED) {
+    Serial.print('.');
+    delay(1000);
+  }
+  // Print ESP32 Local IP Address
+  Serial.println(WiFi.localIP());
 
-    // Print ESP Local IP Address
-    Serial.println(WiFi.localIP());
+  initWebSocket();
 
-    initWebSocket();
+  // Route for root / web page
+  server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
+      //request->send_P(200, "text/html", index_html, processor);
+      request -> send(SPIFFS, "/index.html", "text/html", false, processor);
+  });
 
-    // Route for root / web page
-    server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
-        request->send_P(200, "text/html", index_html, processor);
-    });
+  server.serveStatic("/", SPIFFS, "/");
 
-    // Start server
-    server.begin();
+  // Start server
+  server.begin();
 }
 
 void loop() {
-  ws.cleanupClients();
   if(motorState){
     digitalWrite(motorPin, motorState);
     if (verify_half_turn() == 1)
@@ -141,4 +134,5 @@ void loop() {
       notifyClients();
     }
   }
+  ws.cleanupClients();
 }
