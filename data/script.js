@@ -29,6 +29,7 @@ function onMessage(event) {
             state.innerHTML = "Dispensing...";
             state.classList.add("dispensing");
             state.classList.remove("ready");
+            document.getElementById('button').disabled = true;
         } else {
             state.innerHTML = "Ready";
             state.classList.add("ready");
