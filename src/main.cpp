@@ -5,12 +5,12 @@
 #include "SPIFFS.h"
 
 // Replace with your network credentials
-//const char* ssid = "UA-Alumnos";
-//const char* password = "41umn05WLC";
-const char* ssid = "Fibertel WiFi212 2.4GHz";
-const char* password = "dorysmerlin0270";
+const char* ssid = "UA-Alumnos";
+const char* password = "41umn05WLC";
 
-bool motorState = 0;
+bool dispensing = 0;
+int candiesStock = 40;
+int buyed = 0;
 const int motorPin = 23;
 const int switchPin = 22;
 
@@ -18,17 +18,29 @@ const int switchPin = 22;
 AsyncWebServer server(80);
 AsyncWebSocket ws("/ws");
 
-void notifyClients() {
-  ws.textAll(String(motorState));
+void notifyDispensing() {
+  ws.textAll("Dispensing:"+String(dispensing));
+}
+
+void notifyCandies() {
+  ws.textAll("Candies:"+String(candiesStock));
 }
 
 void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
   AwsFrameInfo *info = (AwsFrameInfo*)arg;
   if (info->final && info->index == 0 && info->len == len && info->opcode == WS_TEXT) {
     data[len] = 0;
-    if (strcmp((char*)data, "toggle") == 0) {
-      motorState = true;
-      notifyClients();
+    Serial.printf("WebSocket client message: %s\n", (char*)data);
+    if (strncmp((char*)data, "buy", 3) == 0) {
+      int buy = atoi((char*)&data[4]);
+      if (buy <= candiesStock){
+        Serial.printf("Dispensing %d candies\n", buy);
+        buyed = buy;
+        candiesStock -= buy;
+        dispensing = 1;
+        notifyDispensing();
+        notifyCandies();
+      }    
     }
   }
 }
@@ -59,12 +71,15 @@ void initWebSocket() {
 String processor(const String& var){
   Serial.println(var);
   if(var == "STATE"){
-    if (motorState){
-      return "ON";
+    if (dispensing){
+      return "Dispensing...";
     }
     else{
-      return "OFF";
+      return "Ready";
     }
+  }
+  else if(var == "CANDIES"){
+    return String(candiesStock);
   }
   return String();
 }
@@ -125,14 +140,16 @@ void setup(){
 }
 
 void loop() {
-  if(motorState){
-    digitalWrite(motorPin, motorState);
-    if (verify_half_turn() == 1)
-    {
-      motorState = !motorState;
-      digitalWrite(motorPin, motorState);
-      notifyClients();
+  if(dispensing){
+    while (buyed){
+      digitalWrite(motorPin, HIGH);
+      if (verify_half_turn()){
+        digitalWrite(motorPin, LOW);
+        delay(1000);
+        buyed--;
+      }        
     }
+    dispensing = 0;
+    notifyDispensing();
   }
-  ws.cleanupClients();
 }

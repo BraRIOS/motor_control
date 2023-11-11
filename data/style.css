@@ -11,9 +11,10 @@ h2{
     font-weight: bold;
     color: #143642;
 }
+
 .topnav {
     overflow: hidden;
-    background-color: #143642;
+    background-color: #411054;
 }
 body {
     margin: 0;
@@ -35,7 +36,7 @@ body {
     text-align: center;
     outline: none;
     color: #fff;
-    background-color: #0f8b8d;
+    background-color: #8420AB;
     border: none;
     border-radius: 5px;
     -webkit-touch-callout: none;
@@ -47,12 +48,45 @@ body {
     -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
 .button:active {
-    background-color: #0f8b8d;
+    background-color: #681A87;
     box-shadow: 2 2px #CDCDCD;
     transform: translateY(2px);
 }
-.state {
-    font-size: 1.5rem;
-    color:#8c8c8c;
+.button:disabled {
+    background-color: #CDCDCD;
+    color: #666666;
+}
+.state.ready{
+    color: #11a111;
+}
+.state.dispensing{
+    color: #0f8b8d;
+}
+.candies_stock{
+    font-size: 18px;
+    color: #143642;
     font-weight: bold;
+}
+.candies_stock span{
+    color: #8303b6;
+}
+.candies_buy{
+    padding: 8px; /* Añade un espacio interno para mejorar la apariencia */
+    font-size: 18px; /* Tamaño de la fuente */
+    border: 1px solid #ccc; /* Borde del input */
+    border-radius: 4px; /* Bordes redondeados */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* Sombra ligera para resaltar */
+    outline: none; /* Elimina el contorno predeterminado en algunos navegadores */
+    text-align: center;
+}
+.candies_buy:focus{
+    border-color: #A729D9; /* Cambia el color del borde al enfocar el input */
+    box-shadow: 0 0 8px rgb(214 135 255 / 40%); /* Sombra más notoria al enfocar */
+}
+
+/* Estilo para las flechas de incremento y decremento en algunos navegadores */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none; /* Elimina la apariencia predeterminada de las flechas */
+  margin: 0; /* Elimina el margen */
 }
