@@ -12,9 +12,10 @@
       </div>
       <div class="content">
         <div class="card">
-            <h2>Output - GPIO 23</h2>
-            <p class="state">state: <span id="state">%STATE%</span></p>
-            <p><button id="button" class="button">Toggle</button></p>
+            <h2><span class="state ready" id="state">%STATE%</span></h2>
+            <p class="candies_stock">Candies left: <span id="candies stock">%CANDIES%</span></p>
+            <input type="number" class="candies_buy" id="candies number" min="1">
+            <p><button id="button" class="button">BUY</button></p>
         </div>
       </div>
       <script src="script.js"></script>
