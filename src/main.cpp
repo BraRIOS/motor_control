@@ -5,11 +5,14 @@
 #include "SPIFFS.h"
 
 // Replace with your network credentials
-const char* ssid = "UA-Alumnos";
-const char* password = "41umn05WLC";
+//const char* ssid = "UA-Alumnos";
+//const char* password = "41umn05WLC";
+const char* ssid = "Fibertel WiFi212 2.4GHz";
+const char* password = "dorysmerlin0270";
 
 bool dispensing = 0;
 int candiesStock = 40;
+int price = 5;
 int buyed = 0;
 const int motorPin = 23;
 const int switchPin = 22;
@@ -26,6 +29,10 @@ void notifyCandies() {
   ws.textAll("Candies:"+String(candiesStock));
 }
 
+void notifyPrice() {
+  ws.textAll("Price:"+String(price));
+}
+
 void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
   AwsFrameInfo *info = (AwsFrameInfo*)arg;
   if (info->final && info->index == 0 && info->len == len && info->opcode == WS_TEXT) {
@@ -33,7 +40,7 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
     Serial.printf("WebSocket client message: %s\n", (char*)data);
     if (strncmp((char*)data, "buy", 3) == 0) {
       int buy = atoi((char*)&data[4]);
-      if (buy <= candiesStock){
+      if (buy <= candiesStock && buy > 0){
         Serial.printf("Dispensing %d candies\n", buy);
         buyed = buy;
         candiesStock -= buy;
@@ -80,6 +87,9 @@ String processor(const String& var){
   }
   else if(var == "CANDIES"){
     return String(candiesStock);
+  }
+  else if(var == "PRICE"){
+    return String(price);
   }
   return String();
 }

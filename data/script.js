@@ -21,7 +21,7 @@ function onClose(event) {
 
 function onMessage(event) {
     var state = document.getElementById('state')
-    //verificar que el mensaje comience con "dispensing"
+    //actualizar el estado de la maquina
     var startsWith = event.data.split(":")[0];
     if (startsWith == "Dispensing"){
         var bool = event.data.split(":")[1];
@@ -37,13 +37,17 @@ function onMessage(event) {
             document.getElementById('button').disabled = false;
         }
     }
-
-    //verificar que el mensaje comience con "candies"
+    //actualizar el stock de candies
     else if (startsWith == "Candies"){
         candiesStock = event.data.split(":")[1];
         var stock = document.getElementById('candies stock');
         stock.innerHTML = candiesStock;
         document.getElementById('candies number').max = candiesStock;
+    }
+    //actualizar el precio
+    else if (startsWith == "Price"){
+        var price = document.getElementById('candies price');
+        price.innerHTML = event.data.split(":")[1];
     }
 }
 
@@ -67,8 +71,43 @@ function initStock() {
 }
 
 function buy(){
-    document.getElementById('button').disabled = true;
     var candiesBuyed = document.getElementById('candies number');
+    validateInputCandies(candiesBuyed);
+    document.getElementById('button').disabled = true;
     websocket.send('buy:' + candiesBuyed.value);
     candiesBuyed.value = '';
+}
+
+function validateInputCandies(input) {
+    var value = parseInt(input.value);
+    var max = parseInt(input.max);
+    var error = document.getElementById('error');
+    if (value > max) {
+        error.innerHTML = 'Not enough candies in stock, max: ' + max + ' candies';
+        error.style.display = 'block';
+        document.getElementById('button').disabled = true;
+        return;
+    }
+    else if(value == 0){
+        error.innerHTML = 'You must buy at least one candy';
+        error.style.display = 'block';
+        document.getElementById('button').disabled = true;
+        return;
+    }
+    else if(value < 0){
+        error.innerHTML = 'You must buy a positive number of candies';
+        error.style.display = 'block';
+        document.getElementById('button').disabled = true;
+        return;
+    }
+    else if(isNaN(value)){
+        error.style.display = 'block';
+        error.innerHTML = 'You must buy a number of candies';
+        document.getElementById('button').disabled = true;
+        return;
+    }
+    else {
+        document.getElementById('button').disabled = false;
+        error.style.display = 'none';
+    }
 }

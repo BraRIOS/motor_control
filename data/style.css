@@ -9,7 +9,6 @@ h1 {
 h2{
     font-size: 1.5rem;
     font-weight: bold;
-    color: #143642;
 }
 
 .topnav {
@@ -29,6 +28,14 @@ body {
     box-shadow: 2px 2px 12px 1px rgba(140,140,140,.5);
     padding-top:10px;
     padding-bottom:20px;
+}
+.row {
+    display: flex;
+    justify-content: center; /* Alinea los elementos a los extremos */
+    align-items: center; /* Centra verticalmente los elementos */
+}
+.row p {
+    width: 200px;
 }
 .button {
     padding: 15px 50px;
@@ -62,12 +69,12 @@ body {
 .state.dispensing{
     color: #0f8b8d;
 }
-.candies_stock{
+.candies_info{
     font-size: 18px;
-    color: #143642;
+    color: #310C40;
     font-weight: bold;
 }
-.candies_stock span{
+.candies_info .candies_stock{
     color: #8303b6;
 }
 .candies_buy{
@@ -89,4 +96,13 @@ input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none; /* Elimina la apariencia predeterminada de las flechas */
   margin: 0; /* Elimina el margen */
+}
+.error{
+    display: none;
+    background-color: #f8d7da; /* Color de fondo rojo claro (puedes ajustar esto) */
+    color: #721c24; /* Color de texto oscuro (puedes ajustar esto) */
+    padding: 15px; /* Espaciado interno */
+    margin: 10px 0; /* Espaciado externo arriba y abajo */
+    border: 1px solid #f5c6cb; /* Borde delgado */
+    border-radius: 4px; /* Bordes redondeados */
 }

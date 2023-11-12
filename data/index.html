@@ -13,8 +13,19 @@
       <div class="content">
         <div class="card">
             <h2><span class="state ready" id="state">%STATE%</span></h2>
-            <p class="candies_stock">Candies left: <span id="candies stock">%CANDIES%</span></p>
-            <input type="number" class="candies_buy" id="candies number" min="1">
+            <div class="row">
+              <p class="candies_info">
+                Candies left: <span class="candies_stock" id="candies stock">%CANDIES%</span>
+              </p>
+              <p class="candies_info">
+                Price: <span id="candies price">%PRICE%</span>
+              </p>
+            </div>
+            <p class="candies_info">
+              How many candies do you want to buy?
+            </p>
+            <input type="number" class="candies_buy" id="candies number" min="1" oninput="validateInputCandies(this)">
+            <div id="error" class="error"></div>
             <p><button id="button" class="button">BUY</button></p>
         </div>
       </div>
