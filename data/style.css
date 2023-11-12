@@ -70,12 +70,17 @@ body {
     color: #0f8b8d;
 }
 .candies_info{
-    font-size: 18px;
+    font-size: 20px;
     color: #310C40;
     font-weight: bold;
 }
 .candies_info .candies_stock{
     color: #8303b6;
+}
+.candies_ask{
+    padding-top: 8px; 
+    font-size: 18px;
+    color: #310C40;
 }
 .candies_buy{
     padding: 8px; /* Añade un espacio interno para mejorar la apariencia */
