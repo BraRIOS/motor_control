@@ -2,7 +2,7 @@
 
 ##  Using a switch intended to control mechanically a motor to half turn, and an input from a Websocket to control how many times the motor turns.
 
-    Electronica Digital - Austral - 2023 - Grupo 1_3
+    Informática Electrónica - Austral - 2023 - Grupo 1_3
     Uses ESP32 microcontroller
 
 ###  Hardware
